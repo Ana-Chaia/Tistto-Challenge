@@ -6,3 +6,8 @@ urlpatterns = [
     path("todos/<int:pk>", views.todo_detail, name='todo_detail'),
 
 ]
+
+urls:
+    # http://127.0.0.1:8000/todos
+    # http://127.0.0.1:8000/todos/id
+    
