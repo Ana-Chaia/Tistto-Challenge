@@ -8,6 +8,7 @@ User = get_user_model()
 class Profile(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.TextField()
+    last_name = models.TextField()
     email = models.EmailField()
     password = models.CharField(max_length=10)
 

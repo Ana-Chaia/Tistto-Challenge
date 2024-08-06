@@ -1,43 +1,38 @@
-from django.shortcuts import render
-from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from django.contrib import messages, auth
-from authenticationapp.models import Profile
-
-# Create your views here.
-
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login as auth_login
 
 def signup(request):
     if request.method == 'POST':
-        name = request.POST['name']
-        lastname = request.POST['lastname']
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        password2 = request.POST['password2']
+        name = request.POST.get('name')
+        lastname = request.POST.get('lastname')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
 
         if password == password2:
-            if User.objects.filter(email=email).exists():
-                messages.info(request, 'Email already exists!')
-                return redirect('signup/')
-            elif User.objects.filter(username=username).exists():
-                messages.info(request, 'Username already taken!')
-                return redirect('signup/')
+            if not User.objects.filter(username=username).exists():
+                if not User.objects.filter(email=email).exists():
+                    user = User.objects.create_user(username=username, email=email, password=password)
+                    user.first_name = name  # Set first name
+                    user.last_name = lastname  # Set last name
+                    user.save()
+                    user = authenticate(request, username=username, password=password)
+                    if user is not None:
+                        auth_login(request, user)  # Correct usage of login
+                        return redirect('login')
+                    else:
+                        return HttpResponse('Authentication failed')
+                else:
+                    return HttpResponse('Email already exists')
             else:
-                user = User.objects.create_user(name=name, lastname=lastname, username=username, email=email, password=password, password2=password2)
-                user.save()
-
-                user_model = User.objects.get(username=username)
-                new_profile = Profile.objects.create(user=user_model, id_user=user_model.id)
-                new_profile.save()
-                return redirect('login/')
+                return HttpResponse('Username already exists')
         else:
-            messages.info(request, 'Passwords do not match!')
-            return redirect('signup/')
+            return HttpResponse('Passwords do not match')
     else:
-
         return render(request, 'registration/registration.html')
-    
 
 
 def login(request):
