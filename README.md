@@ -8,12 +8,14 @@ e PostgreSQL.
 - Python 3.6+
 - Django 3.2+
 - Django REST Framework
+- Node.js 14+
+- Docker 20.10+
 
 ## Configuração do Ambiente
 1. **Clone o repositório:**
 
     ```bash
-    git clone <https://github.com/Ana-Chaia/todo_project.git
+    git clone <https://github.com/Ana-Chaia/todo_project.git>
     cd todo_project
     ```
 
@@ -35,6 +37,8 @@ e PostgreSQL.
     - Execute as migrações do banco de dados:
 
     ```bash
+     docker run --name servidor_meu_banco --network=postgres-network -e "POSTGRES_PASSWORD=mysecret" -p 5433:5432 -v /$HOME/Documentos/bancodedados:/var/lib/postgresql/data -d postgres
+     
     python manage.py migrate
     ```
 

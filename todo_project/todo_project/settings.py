@@ -47,9 +47,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware'
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -87,7 +87,7 @@ DATABASES = {
         'NAME': 'authentication_tistto',
         'USER': 'postgres',
         'PASSWORD': 'mysecret',
-        'HOST': '172.16.80.130',
+        'HOST': '172.0.0.1',
         'PORT': '5432',
 
     }
@@ -136,6 +136,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "https://localhost:5173/"
-    "http://127.0.0.1:5173/",
+    'https://localhost:5173',
+    'http://127.0.0.1:5173',
 ]
